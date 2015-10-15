@@ -114,7 +114,7 @@ NSString * const kCommonMetadata        = @"commonMetadata";
     __weak __typeof(self)weakSelf = self;
     [asset loadValuesAsynchronouslyForKeys:self.class.assetKeysToLoad completionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            for (NSString *key in self.class.assetKeysRequiredToPlay)
+            for (NSString *key in weakSelf.class.assetKeysRequiredToPlay)
             {
                 NSError *error = nil;
                 if ([asset statusOfValueForKey:key error:&error] == AVKeyValueStatusFailed)
@@ -123,7 +123,7 @@ NSString * const kCommonMetadata        = @"commonMetadata";
                     
                     NSString *message = [NSString localizedStringWithFormat:stringFormat, asset.URL, key];
                     
-                    [self handleErrorWithMessage:message error:error];
+                    [weakSelf handleErrorWithMessage:message error:error];
                     
                     return;
                 }
@@ -135,12 +135,12 @@ NSString * const kCommonMetadata        = @"commonMetadata";
                 
                 NSString *message = [NSString localizedStringWithFormat:stringFormat, asset.URL];
                 
-                [self handleErrorWithMessage:message error:nil];
+                [weakSelf handleErrorWithMessage:message error:nil];
                 
                 return;
             }
             
-            [self enqueueAsset:asset];
+            [weakSelf enqueueAsset:asset];
         });
     }];
 }
