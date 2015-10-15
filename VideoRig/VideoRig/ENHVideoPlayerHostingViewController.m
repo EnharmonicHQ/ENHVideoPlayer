@@ -21,7 +21,6 @@ NSString * const kCommonMetadata        = @"commonMetadata";
 
 @interface ENHVideoPlayerHostingViewController ()
 
-@property (nonatomic, weak) IBOutlet UIView *playerHostingView;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, weak) UIViewController *playerViewController;
 @property (nonatomic, strong, readwrite) AVQueuePlayer *player;
