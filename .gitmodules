@@ -1,0 +1,3 @@
+[submodule "Contrib/FBKVOController"]
+	path = Contrib/FBKVOController
+	url = https://github.com/facebook/KVOController.git
