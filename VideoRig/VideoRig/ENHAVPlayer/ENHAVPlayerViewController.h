@@ -19,6 +19,7 @@
 @property (weak) id <ENHAVPlayerViewControllerControlVisibilityDelegate> controlVisibilityDelegate;
 @property (nonatomic, weak) AVPlayer *player;
 @property (readonly) BOOL isShowingPlayerControls;
+@property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
 
 @end
 

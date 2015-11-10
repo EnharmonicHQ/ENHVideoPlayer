@@ -23,7 +23,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 @interface ENHAVPlayerViewController () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, weak) IBOutlet ENHAVPlayerView *playerView;
-@property (nonatomic, weak) IBOutlet UIView *contentOverlayView;
+@property (nonatomic, weak, readwrite) IBOutlet UIView *contentOverlayView;
 @property (nonatomic, weak) IBOutlet ENHAVPlayerControlsView *playerControlsView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *playerControlsBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *playerControlsHeightConstraint;
