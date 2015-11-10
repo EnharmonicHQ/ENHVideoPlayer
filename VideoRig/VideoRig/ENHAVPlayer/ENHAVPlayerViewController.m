@@ -217,6 +217,10 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     {
         shouldHidePlayerControls = NO;
     }
+    else if (CGSizeEqualToSize([self.player.currentItem presentationSize], CGSizeZero)) // Do not hide when playing audio only content.
+    {
+        shouldHidePlayerControls = NO;
+    }
     
     return shouldHidePlayerControls;
 }
