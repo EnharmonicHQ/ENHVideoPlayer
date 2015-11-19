@@ -431,6 +431,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                   completionHandler:^(BOOL finished) {
                       dispatch_async(dispatch_get_main_queue(), ^{
                           [weakSelf setSeekInProgress:NO];
+                          [weakSelf syncTimeUI];
                       });
                   }];
         }
@@ -490,21 +491,24 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 -(void)addPeriodicTimeObserver
 {
-    CMTime duration = [self.player.currentItem duration];
-    if (CMTIME_IS_VALID(duration) && !CMTIME_IS_INDEFINITE(duration) && !self.periodicTimeObserver)
+    if (![self periodicTimeObserver])
     {
-        CGFloat width = self.view.bounds.size.width;
-        if ([self.playerControlsView playbackPositionSlider])
+        CMTime duration = [self.player.currentItem duration];
+        if (CMTIME_IS_VALID(duration) && !CMTIME_IS_INDEFINITE(duration) && !self.periodicTimeObserver)
         {
-            width = self.playerControlsView.playbackPositionSlider.bounds.size.width;
+            CGFloat width = self.view.bounds.size.width;
+            if ([self.playerControlsView playbackPositionSlider])
+            {
+                width = self.playerControlsView.playbackPositionSlider.bounds.size.width;
+            }
+            Float64 tolerance = 0.5f * CMTimeGetSeconds(duration) / width;
+            __weak __typeof(self)weakSelf = self;
+            self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(tolerance, NSEC_PER_SEC)
+                                                                                  queue:NULL
+                                                                             usingBlock:^(CMTime time) {
+                                                                                 [weakSelf syncTimeUI];
+                                                                             }];
         }
-        Float64 tolerance = 0.5f * CMTimeGetSeconds(duration) / width;
-        __weak __typeof(self)weakSelf = self;
-        self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(tolerance, NSEC_PER_SEC)
-                                                                              queue:NULL
-                                                                         usingBlock:^(CMTime time) {
-                                                                             [weakSelf syncTimeUI];
-                                                                         }];
     }
 }
 
@@ -667,6 +671,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf updateIdlePosterFrameImage];
         [weakSelf syncTimeUI];
+        [weakSelf addPeriodicTimeObserver];
     });
 }
 
