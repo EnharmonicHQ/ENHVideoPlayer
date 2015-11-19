@@ -14,7 +14,6 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
 
 @interface ENHAVPlayerControlsView ()
 
-@property (nonatomic, weak, readwrite) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak, readwrite) IBOutlet ENHPlaybackButton *playPauseButton;
 @property (nonatomic, weak, readwrite) IBOutlet ENHTappableSlider *playbackPositionSlider;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *playheadTimeLabel;
@@ -90,8 +89,16 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
 
 -(void)setEnabled:(BOOL)enabled
 {
-    NSArray *controls = @[self.playPauseButton,
-                          self.playbackPositionSlider];
+    NSMutableArray *controls = [NSMutableArray array];
+    if (self.playbackPositionSlider)
+    {
+        [controls addObject:self.playbackPositionSlider];
+    }
+    if (self.playPauseButton)
+    {
+        [controls addObject:self.playPauseButton];
+    }
+
     for (UIControl *control in controls)
     {
         [control setEnabled:enabled];
