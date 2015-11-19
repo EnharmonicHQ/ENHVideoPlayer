@@ -86,14 +86,28 @@
         case ENHPlaybackButtonStatePlaybackReady:
             [self setHidden:NO];
             [self.activityIndicator stopAnimating];
-            [self setTitle:@"►" forState:UIControlStateNormal];
-//            [self setTintColor:self.superview.tintColor];
+            if (self.playImage)
+            {
+                [self setImage:self.playImage forState:UIControlStateNormal];
+                [self setTintColor:self.superview.tintColor];
+            }
+            else
+            {
+                [self setTitle:@"►" forState:UIControlStateNormal];
+            }
             break;
         case ENHPlaybackButtonStatePlaybackPlaying:
             [self setHidden:NO];
             [self.activityIndicator stopAnimating];
-            [self setTitle:@"||" forState:UIControlStateNormal];
-//            [self setTintColor:self.superview.tintColor];
+            if (self.pauseImage)
+            {
+                [self setImage:self.pauseImage forState:UIControlStateNormal];
+                [self setTintColor:self.superview.tintColor];
+            }
+            else
+            {
+                [self setTitle:@"||" forState:UIControlStateNormal];
+            }
             break;
     }
     

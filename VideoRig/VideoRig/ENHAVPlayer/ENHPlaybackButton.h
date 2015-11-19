@@ -23,7 +23,10 @@ typedef NS_ENUM(NSUInteger, ENHPlaybackButtonState){
 /**
  *  The displayed state of the button.
  */
-@property(nonatomic) ENHPlaybackButtonState status;
+@property (nonatomic) ENHPlaybackButtonState status;
+
+@property (nonatomic, strong) UIImage *playImage;
+@property (nonatomic, strong) UIImage *pauseImage;
 
 +(ENHPlaybackButton *)buttonWithFrame:(CGRect)frame;
 
