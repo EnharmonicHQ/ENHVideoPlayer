@@ -103,7 +103,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                           delay:duration
                         options:options
                      animations:^{
-                         self.playerControlsBottomConstraint.constant = show ? 0.0 : (-1.0 * self.playerControlsHeightConstraint.constant);
+                         [self updatePlayerControlsViewConstraintsShowing:show];
                          [self.view layoutIfNeeded];
                      } completion:^(BOOL finished) {
                          if (show)
@@ -122,6 +122,11 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                          }
                          [self setPlayerControlsViewAnimationInFlight:NO];
                      }];
+}
+
+-(void)updatePlayerControlsViewConstraintsShowing:(BOOL)show
+{
+    self.playerControlsBottomConstraint.constant = show ? 0.0 : (-1.0 * self.playerControlsHeightConstraint.constant);
 }
 
 -(BOOL)isShowingPlayerControls
