@@ -98,12 +98,15 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
         }
     }
     
+    CGFloat alpha = show ? 1.0 : 0.0;
+    
     [self.view layoutIfNeeded]; // Ensures that all pending layout operations have been completed
     [UIView animateWithDuration:duration
                           delay:duration
                         options:options
                      animations:^{
                          [self updatePlayerControlsViewConstraintsShowing:show];
+                         [self.playerControlsView setAlpha:alpha];
                          [self.view layoutIfNeeded];
                      } completion:^(BOOL finished) {
                          if (show)
@@ -112,6 +115,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                              {
                                  [self.controlVisibilityDelegate playerViewController:self didShowControlsView:self.playerControlsView];
                              }
+                             
+                             [self deferredHidePlayerControlsView];
                          }
                          else
                          {
@@ -202,7 +207,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 -(void)deferredHidePlayerControlsView
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayerControlsView) object:nil];
-    if ([self.player rate] != 0.0)
+    if ([self shouldHidePlayerControlsView])
     {
         [self performSelector:@selector(hidePlayerControlsView)
                    withObject:nil
