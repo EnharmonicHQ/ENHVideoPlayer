@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @import AVFoundation;
 
 @class ENHAVPlayerControlsView;
@@ -17,9 +19,10 @@
 @interface ENHAVPlayerViewController : UIViewController
 
 @property (weak) id <ENHAVPlayerViewControllerControlVisibilityDelegate> controlVisibilityDelegate;
-@property (nonatomic, weak) AVPlayer *player;
+@property (nonatomic, weak, nullable) AVPlayer *player;
 @property (readonly) BOOL isShowingPlayerControls;
 @property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
+@property (readonly, nullable) NSURL *currentPlayerItemURL;
 
 @end
 
@@ -43,3 +46,5 @@
 
 
 @end
+
+NS_ASSUME_NONNULL_END

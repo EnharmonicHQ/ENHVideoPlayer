@@ -14,7 +14,7 @@
 #import "ENHAVIdlePlaybackView.h"
 
 // Utilities
-#import "NSObject+FBKVOController.h"
+#import <KVOController/NSObject+FBKVOController.h>
 #import "NSString+ENHTimeInterval.h"
 #import "UIImageView+ENHAVThumbnail.h"
 
@@ -733,6 +733,19 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
             [self observePlayer];
         }
     }
+}
+
+-(NSURL *)currentPlayerItemURL
+{
+    NSURL *url = nil;
+    AVAsset *asset = (AVURLAsset *)[self.player.currentItem asset];
+    if ([asset isKindOfClass:AVURLAsset.class])
+    {
+        AVURLAsset *urlAsset = (AVURLAsset *)asset;
+        url = [urlAsset URL];
+    }
+    
+    return url;
 }
 
 @end
