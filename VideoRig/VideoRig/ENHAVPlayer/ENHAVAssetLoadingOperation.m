@@ -188,4 +188,56 @@ typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
     return @[kPlayableKey, kProtectedContentKey];
 }
 
+#pragma mark - Asset Loading Utilities
+
++ (NSOperationQueue *)sharedAssetLoadingQueue {
+  static NSOperationQueue *_sharedAssetLoadingQueue = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    _sharedAssetLoadingQueue = [[NSOperationQueue alloc] init];
+    [_sharedAssetLoadingQueue setMaxConcurrentOperationCount:1]; // serial queue
+    [_sharedAssetLoadingQueue setQualityOfService:NSQualityOfServiceUserInitiated];
+    [_sharedAssetLoadingQueue setSuspended:NO];
+  });
+  
+  return _sharedAssetLoadingQueue;
+}
+
++(ENHAVAssetLoadingOperation *)loadAssetWithURLString:(NSString *)assetURLString
+                                       operationQueue:(NSOperationQueue *)operationQueue
+                                              success:(void (^)(AVPlayerItem *playerItem))success
+                                              failure:(void (^)(NSError *error))failure
+{
+    NSURL *assetURL = [NSURL URLWithString:assetURLString];
+    return [self loadAssetWithURL:assetURL
+                   operationQueue:operationQueue
+                          success:success failure:failure];
+}
+
++(ENHAVAssetLoadingOperation *)loadAssetWithURL:(NSURL *)assetURL
+                                 operationQueue:(NSOperationQueue *)operationQueue
+                                        success:(void (^)(AVPlayerItem *playerItem))success
+                                        failure:(void (^)(NSError *error))failure
+{
+  ENHAVAssetLoadingOperation *loadingOperation = nil;
+  loadingOperation = [[ENHAVAssetLoadingOperation alloc] initWithAssetURL:assetURL
+                                                          assetKeysToLoad:[ENHAVAssetLoadingOperation assetKeysRequiredForPlayback]
+                                                                  success:^(AVURLAsset *asset) {
+                                                                    AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:asset];
+                                                                    if (success)
+                                                                    {
+                                                                      success(item);
+                                                                    }
+                                                                  } failure:failure];
+    
+    NSOperationQueue *queue = operationQueue;
+    if (!queue)
+    {
+        queue = [self sharedAssetLoadingQueue];
+    }
+    [queue addOperation:loadingOperation];
+    
+    return loadingOperation;
+}
+
 @end
