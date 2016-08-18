@@ -269,8 +269,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                withDuration:(NSTimeInterval)duration
                     options:(UIViewAnimationOptions)options
 {
-    NSLog(@"-[%@ %@] show: %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd), (show ? @"YES" : @"NO"));
-    
+//    NSLog(@"-[%@ %@] show: %@", NSStringFromClass(self.class), NSStringFromSelector(_cmd), (show ? @"YES" : @"NO"));
+  
     CGFloat initialAlpha = show ? 0.0 : 1.0;
     CGFloat finalAlpha = show ? 1.0 : 0.0;
     
@@ -338,14 +338,14 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                                                                 failure:^(NSError *error) {
                                                                     if (error)
                                                                     {
-                                                                        NSLog(@"Image Error: %@", error);
+//                                                                        NSLog(@"Image Error: %@", error);
                                                                     }
                                                                 }];
         }
     }
     else
     {
-        NSLog(@"-[%@ %@] not ready.", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
+//        NSLog(@"-[%@ %@] not ready.", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
     }
 }
 
@@ -653,7 +653,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     if ([self.player isExternalPlaybackActive])
     {
-        NSLog(@"-[%@ %@] - YES", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
+//        NSLog(@"-[%@ %@] - YES", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
         [self showPlayerControlsView];
         [self showIdlePlaybackView:YES
                            message:NSLocalizedString(@"Playing on external device.", @"Playing on external device.")
@@ -662,7 +662,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     }
     else
     {
-        NSLog(@"-[%@ %@] - NO", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
+//        NSLog(@"-[%@ %@] - NO", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
         [self showIdlePlaybackView:NO
                            message:nil
                       withDuration:0.2
@@ -674,7 +674,6 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     __weak __typeof(self)weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf updateIdlePosterFrameImage];
         [weakSelf syncTimeUI];
         [weakSelf addPeriodicTimeObserver];
     });
