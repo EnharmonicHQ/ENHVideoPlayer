@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15C31f" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -23,12 +24,10 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovC-iX-135" customClass="ENHAVPlayerView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aRg-WN-MZI">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fgo-K1-qtn" customClass="ENHAVPlayerControlsView">
@@ -48,7 +47,6 @@
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zH7-Ve-7jd" customClass="ENHPlaybackButton">
                                                     <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="zH7-Ve-7jd" secondAttribute="height" multiplier="1:1" id="OVw-Ik-W7L"/>
                                                     </constraints>
@@ -60,21 +58,18 @@
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYB-qp-7xf">
                                                     <rect key="frame" x="44" y="13" width="38" height="18"/>
-                                                    <animations/>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ENL-Dv-RlA">
                                                     <rect key="frame" x="502" y="13" width="38" height="18"/>
-                                                    <animations/>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Czz-Jk-K5l" customClass="MPVolumeView">
                                                     <rect key="frame" x="548" y="0.0" width="44" height="44"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="FmW-en-uSo"/>
@@ -82,7 +77,6 @@
                                                 </view>
                                                 <slider opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8gB-9X-VY2" customClass="ENHTappableSlider">
                                                     <rect key="frame" x="88" y="7" width="408" height="31"/>
-                                                    <animations/>
                                                     <connections>
                                                         <action selector="playbackSliderBegin:" destination="-1" eventType="touchDown" id="f1D-LD-VKL"/>
                                                         <action selector="playbackSliderEnd:" destination="-1" eventType="touchUpInside" id="MOB-9R-6Dm"/>
@@ -93,7 +87,6 @@
                                                     </connections>
                                                 </slider>
                                             </subviews>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="8gB-9X-VY2" firstAttribute="centerY" secondItem="j9H-Qh-O0g" secondAttribute="centerY" id="1d0-h0-uU0"/>
                                                 <constraint firstItem="Czz-Jk-K5l" firstAttribute="centerY" secondItem="ENL-Dv-RlA" secondAttribute="centerY" id="6M6-iW-q5r"/>
@@ -111,13 +104,11 @@
                                                 <constraint firstItem="Czz-Jk-K5l" firstAttribute="top" secondItem="j9H-Qh-O0g" secondAttribute="top" id="t8x-8b-hLk"/>
                                             </constraints>
                                         </view>
-                                        <animations/>
                                         <vibrancyEffect>
                                             <blurEffect style="light"/>
                                         </vibrancyEffect>
                                     </visualEffectView>
                                 </subviews>
-                                <animations/>
                                 <constraints>
                                     <constraint firstItem="wVh-ff-shd" firstAttribute="top" secondItem="R4Y-0d-j44" secondAttribute="top" id="Ity-la-8lF"/>
                                     <constraint firstAttribute="bottom" secondItem="wVh-ff-shd" secondAttribute="bottom" id="h4h-qh-4it"/>
@@ -125,11 +116,9 @@
                                     <constraint firstItem="wVh-ff-shd" firstAttribute="leading" secondItem="R4Y-0d-j44" secondAttribute="leading" id="tcI-zo-bUb"/>
                                 </constraints>
                             </view>
-                            <animations/>
                             <blurEffect style="light"/>
                         </visualEffectView>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="wXP-Lt-y4n" secondAttribute="trailing" id="INM-yB-ZIk"/>
@@ -149,7 +138,6 @@
                     </connections>
                 </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Fgo-K1-qtn" firstAttribute="top" secondItem="aRg-WN-MZI" secondAttribute="bottom" id="0l1-CO-lKS"/>
@@ -172,7 +160,6 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h0P-HO-7I7">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </imageView>
                 <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6D3-pb-0s2">
@@ -189,13 +176,11 @@
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pix-vW-PXu">
                                             <rect key="frame" x="261" y="290" width="79" height="20"/>
-                                            <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstItem="Pix-vW-PXu" firstAttribute="centerY" secondItem="Gsk-s6-bHe" secondAttribute="centerY" id="Ew5-R7-Ulf"/>
                                         <constraint firstItem="Pix-vW-PXu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Gsk-s6-bHe" secondAttribute="top" constant="20" id="NVo-hW-nni"/>
@@ -205,13 +190,11 @@
                                         <constraint firstItem="Pix-vW-PXu" firstAttribute="centerX" secondItem="Gsk-s6-bHe" secondAttribute="centerX" id="sAB-k3-tbS"/>
                                     </constraints>
                                 </view>
-                                <animations/>
                                 <vibrancyEffect>
                                     <blurEffect style="dark"/>
                                 </vibrancyEffect>
                             </visualEffectView>
                         </subviews>
-                        <animations/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="gzf-6q-KJs" secondAttribute="trailing" id="4VB-0P-Shs"/>
                             <constraint firstItem="gzf-6q-KJs" firstAttribute="leading" secondItem="o1m-B4-mi5" secondAttribute="leading" id="OIs-HM-DeZ"/>
@@ -219,11 +202,9 @@
                             <constraint firstAttribute="bottom" secondItem="gzf-6q-KJs" secondAttribute="bottom" id="Wjx-lv-FkQ"/>
                         </constraints>
                     </view>
-                    <animations/>
                     <blurEffect style="dark"/>
                 </visualEffectView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="h0P-HO-7I7" secondAttribute="bottom" id="1FK-sa-A03"/>
