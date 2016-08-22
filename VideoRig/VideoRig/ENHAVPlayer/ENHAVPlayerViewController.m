@@ -434,10 +434,13 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
             __weak __typeof(self)weakSelf = self;
             [self.player seekToTime:CMTimeMakeWithSeconds(time, NSEC_PER_SEC)
                   completionHandler:^(BOOL finished) {
-                      dispatch_async(dispatch_get_main_queue(), ^{
-                          [weakSelf setSeekInProgress:NO];
-                          [weakSelf syncTimeUI];
-                      });
+                      if (finished)
+                      {
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                              [weakSelf setSeekInProgress:NO];
+                              [weakSelf syncTimeUI];
+                          });
+                      }
                   }];
         }
     }
