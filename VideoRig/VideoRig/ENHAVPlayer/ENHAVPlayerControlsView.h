@@ -26,6 +26,7 @@ typedef NS_OPTIONS (NSInteger, ENHAVPlayerControlsViewOptions) {
 @property (nonatomic, weak, readonly) IBOutlet ENHTappableSlider *playbackPositionSlider;
 @property (nonatomic, weak, readonly) IBOutlet UILabel *playheadTimeLabel;
 @property (nonatomic, weak, readonly) IBOutlet UILabel *durationLabel;
+@property (nonatomic, weak, readonly) IBOutlet UIButton *fullscreenModeButton;
 
 @property (nonatomic, assign) ENHAVPlayerControlsViewOptions visibilityOptions;
 

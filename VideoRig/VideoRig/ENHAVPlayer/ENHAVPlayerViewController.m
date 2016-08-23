@@ -35,6 +35,10 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 @property (nonatomic, assign, getter=isSeekInProgress) BOOL seekInProgress;
 @property (nonatomic, assign, getter=isPlayerControlsViewAnimationInFlight) BOOL playerControlsViewAnimationInFlight;
 
+@property (nonatomic, strong) UIView *hostingView;
+@property (nonatomic, assign) BOOL fullScreenActive;
+@property (nonatomic, assign) BOOL fullScreenTransitionInProgress;
+
 @end
 
 @implementation ENHAVPlayerViewController
@@ -68,6 +72,16 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     [self.view addGestureRecognizer:doubleTap];
     
     [singleTap requireGestureRecognizerToFail:doubleTap];
+}
+
+-(void)viewWillLayoutSubviews
+{
+    if ([self fullScreenActive] && ![self fullScreenTransitionInProgress])
+    {
+        UIWindow *window = [self.view window];
+        [self.view setFrame:window.bounds];
+    }
+    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - UI
@@ -349,6 +363,56 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     }
 }
 
+-(void)showFullscreenView:(BOOL)goFullScreen
+             withDuration:(NSTimeInterval)duration
+                  options:(UIViewAnimationOptions)options
+{
+    CGRect endRect = CGRectZero;
+    
+    if (goFullScreen)
+    {
+        CGRect startingRect = [self.view convertRect:self.view.frame toView:nil];
+        
+        if (self.view.superview)
+        {
+            [self setHostingView:self.view.superview];
+        }
+        
+        UIWindow *window = [self.view window];
+        [window addSubview:self.view];
+        endRect = [window bounds];
+        
+        [self.view setFrame:startingRect];
+    }
+    else
+    {
+        endRect = [self.hostingView convertRect:self.hostingView.frame toView:nil];
+    }
+    
+    [self.view layoutIfNeeded];
+    [self setFullScreenTransitionInProgress:YES];
+    __weak __typeof(self)weakSelf = self;
+    [UIView animateWithDuration:duration
+                          delay:duration
+                        options:options
+                     animations:^{
+                         [weakSelf.view setFrame:endRect];
+                         [weakSelf.view layoutIfNeeded];
+                     } completion:^(BOOL finished) {
+                         if (finished)
+                         {
+                             if (!goFullScreen)
+                             {
+                                 [weakSelf.view setFrame:weakSelf.hostingView.bounds];
+                                 [weakSelf.hostingView addSubview:weakSelf.view];
+                             }
+                             
+                             [weakSelf setFullScreenActive:goFullScreen];
+                         }
+                         [weakSelf setFullScreenTransitionInProgress:NO];
+                     }];
+}
+
 #pragma mark - Error Handling - Preparing Assets for Playback Failed
 
 /* --------------------------------------------------------------
@@ -458,6 +522,15 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
         [self.player setRate:self.preSeekRate];
         [self setPreSeekRate:0.0];
     }
+}
+
+-(IBAction)fullScreenModeButtonTapped:(id)sender
+{
+    BOOL shouldGoFullscreen = ![self.playerControlsView.fullscreenModeButton isSelected];
+    [self.playerControlsView.fullscreenModeButton setSelected:shouldGoFullscreen];
+    [self showFullscreenView:shouldGoFullscreen
+                withDuration:0.2
+                     options:(UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)];
 }
 
 #pragma mark - Gesture Handling

@@ -19,8 +19,9 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *playheadTimeLabel;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *durationLabel;
 @property (nonatomic, weak, readwrite) IBOutlet MPVolumeView *airplayView;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton *fullscreenModeButton;
+
 @property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint *airplayViewWidthConstraint;
-@property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint *durationToAirplayViewWidthConstraint;
 
 @end
 
@@ -65,16 +66,13 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
         BOOL shouldShowAirplay = (weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionAirplay);
         if (shouldShowAirplay)
         {
-            shouldShowAirplay = [self.airplayView areWirelessRoutesAvailable];
+            shouldShowAirplay = [weakSelf.airplayView areWirelessRoutesAvailable];
         }
+      
+        [weakSelf.airplayViewWidthConstraint setActive:!shouldShowAirplay];
         [weakSelf.airplayView setHidden:!shouldShowAirplay];
         
-        CGFloat airplayViewWidthConstant = shouldShowAirplay ? 44.0 : 0;
-        [self.airplayViewWidthConstraint setConstant:airplayViewWidthConstant];
-        CGFloat durationToAirplayViewWidthConstant = shouldShowAirplay ? 8.0 : 0;
-        [self.durationToAirplayViewWidthConstraint setConstant:durationToAirplayViewWidthConstant];
-        
-        [self layoutIfNeeded];
+        [weakSelf layoutIfNeeded];
     }];
 }
 
