@@ -174,48 +174,51 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 -(void)syncTimeUI
 {
-    NSString *playheadTimeString = @"--:--";
-    NSString *durationString = @"--:--";
-    
-    CMTime duration = [self.player.currentItem duration];
-    if (CMTIME_IS_INDEFINITE(duration))
+    if (![self isSeekInProgress])
     {
-        playheadTimeString = @"Live";
-        [self.playerControlsView.playbackPositionSlider setHidden:YES];
-    }
-    else
-    {
-        [self.playerControlsView.playbackPositionSlider setHidden:NO];
-        if ((self.player.status == AVPlayerStatusReadyToPlay))
+        NSString *playheadTimeString = @"--:--";
+        NSString *durationString = @"--:--";
+        
+        CMTime duration = [self.player.currentItem duration];
+        if (CMTIME_IS_INDEFINITE(duration))
         {
-            UISlider *playbackPositionSlider = [self.playerControlsView playbackPositionSlider];
-            
-            if (CMTIME_IS_INVALID(duration))
+            playheadTimeString = @"Live";
+            [self.playerControlsView.playbackPositionSlider setHidden:YES];
+        }
+        else
+        {
+            [self.playerControlsView.playbackPositionSlider setHidden:NO];
+            if ((self.player.status == AVPlayerStatusReadyToPlay))
             {
-                [playbackPositionSlider setMinimumValue:0.0];
-                return;
-            }
-            
-            durationString = [NSString enh_HHMMSSStringWithTime:self.player.currentItem.duration];
-            Float64 durationSeconds = CMTimeGetSeconds(duration);
-            
-            CMTime currentTime = self.player.currentItem.currentTime;
-            if (CMTIME_IS_VALID(currentTime))
-            {
-                playheadTimeString = [NSString enh_HHMMSSStringWithTime:self.player.currentItem.currentTime];
-                Float64 currentTimeSeconds = CMTimeGetSeconds(currentTime);
-                [self.playerControlsView.playbackPositionSlider setValue:currentTimeSeconds animated:YES];
+                UISlider *playbackPositionSlider = [self.playerControlsView playbackPositionSlider];
                 
-                float minValue = [playbackPositionSlider minimumValue];
-                float maxValue = [playbackPositionSlider maximumValue];
-                float value = (maxValue - minValue) * currentTimeSeconds / durationSeconds + minValue;
-                [playbackPositionSlider setValue:value animated:YES];
+                if (CMTIME_IS_INVALID(duration))
+                {
+                    [playbackPositionSlider setMinimumValue:0.0];
+                    return;
+                }
+                
+                durationString = [NSString enh_HHMMSSStringWithTime:self.player.currentItem.duration];
+                Float64 durationSeconds = CMTimeGetSeconds(duration);
+                
+                CMTime currentTime = self.player.currentItem.currentTime;
+                if (CMTIME_IS_VALID(currentTime))
+                {
+                    playheadTimeString = [NSString enh_HHMMSSStringWithTime:self.player.currentItem.currentTime];
+                    Float64 currentTimeSeconds = CMTimeGetSeconds(currentTime);
+                    [self.playerControlsView.playbackPositionSlider setValue:currentTimeSeconds animated:YES];
+                    
+                    float minValue = [playbackPositionSlider minimumValue];
+                    float maxValue = [playbackPositionSlider maximumValue];
+                    float value = (maxValue - minValue) * currentTimeSeconds / durationSeconds + minValue;
+                    [playbackPositionSlider setValue:value animated:YES];
+                }
             }
         }
+        
+        [self.playerControlsView.playheadTimeLabel setText:playheadTimeString];
+        [self.playerControlsView.durationLabel setText:durationString];
     }
-    
-    [self.playerControlsView.playheadTimeLabel setText:playheadTimeString];
-    [self.playerControlsView.durationLabel setText:durationString];
 }
 
 -(void)deferredHidePlayerControlsView
