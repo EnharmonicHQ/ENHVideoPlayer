@@ -679,6 +679,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf syncTimeUI];
         [weakSelf addPeriodicTimeObserver];
+        [weakSelf deferredHidePlayerControlsView];
     });
 }
 
