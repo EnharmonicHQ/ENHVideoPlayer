@@ -680,6 +680,12 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
         [weakSelf syncTimeUI];
         [weakSelf addPeriodicTimeObserver];
         [weakSelf deferredHidePlayerControlsView];
+        
+        if (weakSelf.playerItemStatusHandler)
+        {
+            AVPlayerItemStatus status = [weakSelf.player.currentItem status];
+            weakSelf.playerItemStatusHandler(status);
+        }
     });
 }
 
