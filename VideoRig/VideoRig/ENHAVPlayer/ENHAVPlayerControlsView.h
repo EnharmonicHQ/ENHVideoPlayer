@@ -18,6 +18,7 @@ typedef NS_OPTIONS (NSInteger, ENHAVPlayerControlsViewOptions) {
     ENHAVPlayerControlsViewOptionPlayheadTimeLabel      = 1 << 2,
     ENHAVPlayerControlsViewOptionDurationLabel          = 1 << 3,
     ENHAVPlayerControlsViewOptionAirplay                = 1 << 4,
+    ENHAVPlayerControlsViewOptionFullscreen             = 1 << 5,
 };
 
 @interface ENHAVPlayerControlsView : UIView

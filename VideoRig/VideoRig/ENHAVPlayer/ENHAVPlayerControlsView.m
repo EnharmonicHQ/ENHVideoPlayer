@@ -40,7 +40,8 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
                                 ENHAVPlayerControlsViewOptionPlaybackPositionSlider |
                                 ENHAVPlayerControlsViewOptionPlayheadTimeLabel |
                                 ENHAVPlayerControlsViewOptionDurationLabel |
-                                ENHAVPlayerControlsViewOptionAirplay)];
+                                ENHAVPlayerControlsViewOptionAirplay |
+                                ENHAVPlayerControlsViewOptionFullscreen)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleMPVolumeViewWirelessRoutesAvailableDidChangeNotification:)
@@ -62,6 +63,7 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
         [weakSelf.playbackPositionSlider setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlaybackPositionSlider)];
         [weakSelf.playheadTimeLabel setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlayheadTimeLabel)];
         [weakSelf.durationLabel setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionDurationLabel)];
+        [weakSelf.fullscreenModeButton setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionFullscreen)];
         
         BOOL shouldShowAirplay = (weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionAirplay);
         if (shouldShowAirplay)
