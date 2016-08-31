@@ -51,7 +51,7 @@
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zH7-Ve-7jd" customClass="ENHPlaybackButton">
                                                             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" secondItem="zH7-Ve-7jd" secondAttribute="height" multiplier="1:1" id="OVw-Ik-W7L"/>
+                                                                <constraint firstAttribute="width" secondItem="zH7-Ve-7jd" secondAttribute="height" multiplier="1:1" priority="999" id="OVw-Ik-W7L"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" name="Georgia-Bold" family="Georgia" pointSize="17"/>
                                                             <state key="normal" title="►"/>
@@ -110,9 +110,9 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="ULn-LV-lxO" secondAttribute="trailing" constant="8" id="2V3-KX-Ssc"/>
+                                                <constraint firstItem="ULn-LV-lxO" firstAttribute="height" secondItem="j9H-Qh-O0g" secondAttribute="height" id="l5c-7n-T9f"/>
                                                 <constraint firstItem="ULn-LV-lxO" firstAttribute="top" secondItem="j9H-Qh-O0g" secondAttribute="top" id="lvE-Ti-WN2"/>
                                                 <constraint firstItem="ULn-LV-lxO" firstAttribute="leading" secondItem="j9H-Qh-O0g" secondAttribute="leading" constant="8" id="wRM-AJ-7tF"/>
-                                                <constraint firstAttribute="bottom" secondItem="ULn-LV-lxO" secondAttribute="bottom" id="xVF-g5-QGR"/>
                                             </constraints>
                                         </view>
                                         <vibrancyEffect>
