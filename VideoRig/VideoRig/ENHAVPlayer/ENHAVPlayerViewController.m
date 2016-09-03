@@ -51,7 +51,6 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     [self.playerControlsView.playbackPositionSlider setMinimumValue:0.0];
     [self.playerControlsView.playbackPositionSlider setMaximumValue:1.0];
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
-    [self.view setTranslatesAutoresizingMaskIntoConstraints:NO];
 }
 
 -(void)setupGestureRecognizers
