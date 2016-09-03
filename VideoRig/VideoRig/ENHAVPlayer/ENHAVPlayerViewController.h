@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ENHAVPlayerViewController : UIViewController
 
+@property (nonatomic, weak, readonly) IBOutlet ENHAVPlayerControlsView *playerControlsView;
+
 @property (weak) id <ENHAVPlayerViewControllerControlVisibilityDelegate> controlVisibilityDelegate;
 @property (nonatomic, weak, nullable) AVPlayer *player;
 @property (readonly) BOOL isShowingPlayerControls;

@@ -24,7 +24,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 @property (nonatomic, weak) IBOutlet ENHAVPlayerView *playerView;
 @property (nonatomic, weak, readwrite) IBOutlet UIView *contentOverlayView;
-@property (nonatomic, weak) IBOutlet ENHAVPlayerControlsView *playerControlsView;
+@property (nonatomic, weak, readwrite) IBOutlet ENHAVPlayerControlsView *playerControlsView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *playerControlsBottomConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *playerControlsHeightConstraint;
 @property (nonatomic, strong) IBOutlet ENHAVIdlePlaybackView *idlePlaybackView;
