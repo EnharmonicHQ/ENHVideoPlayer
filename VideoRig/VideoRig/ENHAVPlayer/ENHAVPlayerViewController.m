@@ -92,6 +92,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     if (show)
     {
+        [self syncTimeUIForced:YES];
         [self setPlayerControlsViewAnimationInFlight:YES];
         if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewController:willShowControlsView:duration:options:)])
         {
@@ -174,7 +175,12 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 -(void)syncTimeUI
 {
-    if (![self isSeekInProgress])
+    [self syncTimeUIForced:NO];
+}
+
+-(void)syncTimeUIForced:(BOOL)forced
+{
+    if (![self isSeekInProgress] && ((self.playerControlsView.hidden == NO && [self isShowingPlayerControls]) || forced))
     {
         NSString *playheadTimeString = @"--:--";
         NSString *durationString = @"--:--";
