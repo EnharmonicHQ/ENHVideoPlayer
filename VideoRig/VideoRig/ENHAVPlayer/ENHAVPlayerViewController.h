@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nullable) NSURL *currentPlayerItemURL;
 
 -(void)play;
+-(void)hidePlayerControlsView;
+-(void)showPlayerControlsView;
+
 @property (nonatomic, copy, nullable) void (^playerItemStatusHandler)(AVPlayerItemStatus status);
 
 @end

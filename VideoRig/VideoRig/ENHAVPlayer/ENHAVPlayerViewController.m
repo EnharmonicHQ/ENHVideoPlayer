@@ -93,6 +93,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     if (show)
     {
         [self syncTimeUIForced:YES];
+        [self.playerControlsView updateUIVisibility];
         [self setPlayerControlsViewAnimationInFlight:YES];
         if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewController:willShowControlsView:duration:options:)])
         {
@@ -443,8 +444,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     
     NSString *message = [NSString stringWithFormat:@"Error playing content. %@", error.localizedDescription];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Playback Error"
-                                                                    message:message
-                                                             preferredStyle:(UIAlertControllerStyleAlert)];
+                                                                   message:message
+                                                            preferredStyle:(UIAlertControllerStyleAlert)];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
