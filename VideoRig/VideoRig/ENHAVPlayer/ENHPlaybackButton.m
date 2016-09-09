@@ -76,15 +76,12 @@
     {
         case ENHPlaybackButtonStateUnknown:
             [self.activityIndicator stopAnimating];
-            [self setHidden:YES];
             break;
         case ENHPlaybackButtonStateLoading:
-            [self setHidden:NO];
             [self.activityIndicator startAnimating];
             [self setTitle:nil forState:UIControlStateNormal];
             break;
         case ENHPlaybackButtonStatePlaybackReady:
-            [self setHidden:NO];
             [self.activityIndicator stopAnimating];
             if (self.playImage)
             {
@@ -97,7 +94,6 @@
             }
             break;
         case ENHPlaybackButtonStatePlaybackPlaying:
-            [self setHidden:NO];
             [self.activityIndicator stopAnimating];
             if (self.pauseImage)
             {

@@ -30,6 +30,7 @@ typedef NS_OPTIONS (NSInteger, ENHAVPlayerControlsViewOptions) {
 @property (nonatomic, weak, readonly) IBOutlet UIButton *fullscreenModeButton;
 
 @property (nonatomic, assign) ENHAVPlayerControlsViewOptions visibilityOptions;
+-(void)updateUIVisibility;
 
 -(void)setEnabled:(BOOL)enabled;
 
