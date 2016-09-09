@@ -454,23 +454,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     if ([sender status] == ENHPlaybackButtonStatePlaybackReady)
     {
-        if (self.seekToZeroBeforePlay)
-        {
-            [self setSeekToZeroBeforePlay:NO];
-            [self setSeekInProgress:YES];
-            
-            __weak __typeof(self)weakSelf = self;
-            [self.player seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf setSeekInProgress:NO];
-                    [weakSelf.player play];
-                });
-            }];
-        }
-        else
-        {
-            [self.player play];
-        }
+        [self play];
     }
     else if ([sender status] == ENHPlaybackButtonStatePlaybackPlaying)
     {
@@ -478,8 +462,30 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     }
 }
 
+-(void)play
+{
+    if (self.seekToZeroBeforePlay)
+    {
+        [self setSeekToZeroBeforePlay:NO];
+        [self setSeekInProgress:YES];
+        
+        __weak __typeof(self)weakSelf = self;
+        [self.player seekToTime:kCMTimeZero completionHandler:^(BOOL finished) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf setSeekInProgress:NO];
+                [weakSelf.player play];
+            });
+        }];
+    }
+    else
+    {
+        [self.player play];
+    }
+}
+
 -(IBAction)playbackSliderBegin:(id)sender
 {
+    [self setSeekToZeroBeforePlay:NO];
     [self setPreSeekRate:self.player.rate];
     [self.player setRate:0.f];
     [self removePeriodicTimeObserver];

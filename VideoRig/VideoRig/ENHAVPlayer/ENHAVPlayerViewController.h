@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
 @property (readonly, nullable) NSURL *currentPlayerItemURL;
 
+-(void)play;
 @property (nonatomic, copy, nullable) void (^playerItemStatusHandler)(AVPlayerItemStatus status);
 
 @end
