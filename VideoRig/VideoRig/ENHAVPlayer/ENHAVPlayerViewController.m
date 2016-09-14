@@ -36,7 +36,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 @property (nonatomic, assign, getter=isPlayerControlsViewAnimationInFlight) BOOL playerControlsViewAnimationInFlight;
 
 @property (nonatomic, strong) UIView *hostingView;
-@property (nonatomic, assign) BOOL fullScreenActive;
+@property (nonatomic, assign, readwrite) BOOL fullScreenActive;
 @property (nonatomic, assign) BOOL fullScreenTransitionInProgress;
 
 @end
@@ -565,6 +565,11 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     if (tap.state == UIGestureRecognizerStateRecognized)
     {
+        if (self.singleTapHandler)
+        {
+            self.singleTapHandler(tap);
+        }
+      
         if ([self isShowingPlayerControls])
         {
             [self hidePlayerControlsView];

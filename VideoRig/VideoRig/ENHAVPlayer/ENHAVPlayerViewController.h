@@ -25,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly) BOOL isShowingPlayerControls;
 @property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
 @property (readonly, nullable) NSURL *currentPlayerItemURL;
+@property (nonatomic, copy, nullable) void (^singleTapHandler)(UITapGestureRecognizer *tap);
 
 -(void)play;
 -(void)hidePlayerControlsView;
