@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
 @property (readonly, nullable) NSURL *currentPlayerItemURL;
 @property (nonatomic, copy, nullable) void (^singleTapHandler)(UITapGestureRecognizer *tap);
+@property (nonatomic, assign, readonly) BOOL fullScreenActive;
 
 -(void)play;
 -(void)hidePlayerControlsView;
