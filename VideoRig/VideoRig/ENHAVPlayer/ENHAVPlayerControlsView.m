@@ -54,13 +54,15 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
                                                object:nil];
 }
 
--(void)updateUIVisibility
+-(void)updateUIVisibilityAnimated:(BOOL)animated
 {
     __weak __typeof(self)weakSelf = self;
     [self layoutIfNeeded];
-    [UIView animateWithDuration:kENHAVPlayerControlsViewDefaultAnimationDuration animations:^{
+    
+    void (^ continueBlock)() = ^() {
         [weakSelf.playPauseButton setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlayPause)];
         [weakSelf.playbackPositionSlider setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlaybackPositionSlider)];
+        [weakSelf.playbackPositionSlider setAlpha:((weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlaybackPositionSlider) ? 1.0 : 0.0)];
         [weakSelf.playheadTimeLabel setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlayheadTimeLabel)];
         [weakSelf.durationLabel setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionDurationLabel)];
         [weakSelf.fullscreenModeButton setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionFullscreen)];
@@ -70,12 +72,23 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
         {
             shouldShowAirplay = [weakSelf.airplayView areWirelessRoutesAvailable];
         }
-      
+        
         [weakSelf.airplayViewWidthConstraint setActive:!shouldShowAirplay];
         [weakSelf.airplayView setHidden:!shouldShowAirplay];
         
         [weakSelf layoutIfNeeded];
-    }];
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kENHAVPlayerControlsViewDefaultAnimationDuration animations:^{
+            continueBlock();
+        }];
+    }
+    else
+    {
+        continueBlock();
+    }
 }
 
 -(void)setVisibilityOptions:(ENHAVPlayerControlsViewOptions)visibilityOptions
@@ -83,7 +96,7 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
     if (_visibilityOptions != visibilityOptions)
     {
         _visibilityOptions = visibilityOptions;
-        [self updateUIVisibility];
+        [self updateUIVisibilityAnimated:NO];
     }
 }
 
@@ -109,12 +122,12 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
 
 -(void)handleMPVolumeViewWirelessRoutesAvailableDidChangeNotification:(NSNotification *)note
 {
-    [self updateUIVisibility];
+    [self updateUIVisibilityAnimated:YES];
 }
 
 -(void)handleMPVolumeViewWirelessRouteActiveDidChangeNotification:(NSNotification *)note
 {
-    [self updateUIVisibility];
+    [self updateUIVisibilityAnimated:YES];
 }
 
 @end
