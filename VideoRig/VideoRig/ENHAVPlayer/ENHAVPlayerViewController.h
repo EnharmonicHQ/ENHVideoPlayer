@@ -38,6 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol ENHAVPlayerViewControllerControlVisibilityDelegate <NSObject>
 
+@optional
 -(void)playerViewController:(ENHAVPlayerViewController *)playerViewController
        willShowControlsView:(ENHAVPlayerControlsView *)controlsView
                    duration:(NSTimeInterval)duration
@@ -54,6 +55,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)playerViewController:(ENHAVPlayerViewController *)playerViewController
         didHideControlsView:(ENHAVPlayerControlsView *)controlsView;
 
+-(void)playerViewControllerFullScreenModeWillBecomeActive:(ENHAVPlayerViewController *)playerViewController;
+-(void)playerViewControllerFullScreenModeDidBecomeActive:(ENHAVPlayerViewController *)playerViewController;
+-(void)playerViewControllerFullScreenModeWillBecomeInactive:(ENHAVPlayerViewController *)playerViewController;
+-(void)playerViewControllerFullScreenModeDidBecomeInactive:(ENHAVPlayerViewController *)playerViewController;
 
 @end
 

@@ -91,11 +91,11 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                  withDuration:(NSTimeInterval)duration
                       options:(UIViewAnimationOptions)options
 {
+    [self setPlayerControlsViewAnimationInFlight:YES];
+    
     if (show)
     {
         [self syncTimeUIForced:YES];
-        [self.playerControlsView updateUIVisibility];
-        [self setPlayerControlsViewAnimationInFlight:YES];
         if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewController:willShowControlsView:duration:options:)])
         {
             [self.controlVisibilityDelegate playerViewController:self
@@ -117,11 +117,13 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     
     CGFloat alpha = show ? 1.0 : 0.0;
     
+    [self.playerControlsView updateUIVisibilityAnimated:NO];
     [self.view layoutIfNeeded]; // Ensures that all pending layout operations have been completed
     [UIView animateWithDuration:duration
                           delay:duration
                         options:options
                      animations:^{
+                         
                          [self updatePlayerControlsViewConstraintsShowing:show];
                          [self.playerControlsView setAlpha:alpha];
                          [self.view layoutIfNeeded];
@@ -402,6 +404,22 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     
     [self.view layoutIfNeeded];
     [self setFullScreenTransitionInProgress:YES];
+  
+    if (goFullScreen)
+    {
+        if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeActive:)])
+        {
+            [self.controlVisibilityDelegate playerViewControllerFullScreenModeWillBecomeActive:self];
+        }
+    }
+    else
+    {
+        if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeInactive:)])
+        {
+            [self.controlVisibilityDelegate playerViewControllerFullScreenModeWillBecomeInactive:self];
+        }
+    }
+    
     __weak __typeof(self)weakSelf = self;
     [UIView animateWithDuration:duration
                           delay:duration
@@ -421,6 +439,21 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                              [weakSelf setFullScreenActive:goFullScreen];
                          }
                          [weakSelf setFullScreenTransitionInProgress:NO];
+                         
+                         if (weakSelf.fullScreenActive)
+                         {
+                             if ([weakSelf.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeActive:)])
+                             {
+                                 [weakSelf.controlVisibilityDelegate playerViewControllerFullScreenModeDidBecomeActive:weakSelf];
+                             }
+                         }
+                         else
+                         {
+                             if ([weakSelf.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeInactive:)])
+                             {
+                                 [weakSelf.controlVisibilityDelegate playerViewControllerFullScreenModeDidBecomeInactive:weakSelf];
+                             }
+                         }
                      }];
 }
 
