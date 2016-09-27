@@ -9,8 +9,9 @@
 
 NSString * ENHAVAssetLoadingOperationErrorDomain = @"com.enharmonichq.ENHAVAssetLoadingOperation";
 
-NSString * const kPlayableKey           = @"playable";
-NSString * const kProtectedContentKey   = @"hasProtectedContent";
+NSString * const kTracksKey           = @"tracks";
+NSString * const kPlayableKey         = @"playable";
+NSString * const kProtectedContentKey = @"hasProtectedContent";
 
 typedef void (^ENHAVAssetLoadingOperationSuccessBlock)(AVURLAsset *asset);
 typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
@@ -123,6 +124,13 @@ typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
                                                 code:ENHAVAssetLoadingOperationErrorUnplayableAsset
                                             userInfo:@{NSLocalizedDescriptionKey : description}];
                 }
+                if (asset.tracks.count < 1)
+                {
+                    NSString *description = [NSString stringWithFormat:@"Asset does not have any playable tracks: %@", asset.URL.absoluteString];
+                    error = [NSError errorWithDomain:ENHAVAssetLoadingOperationErrorDomain
+                                                code:ENHAVAssetLoadingOperationErrorUnplayableAsset
+                                            userInfo:@{NSLocalizedDescriptionKey : description}];
+                }
                 else if (asset.hasProtectedContent)
                 {
                     NSString *description = [NSString stringWithFormat:@"Asset has protected content: %@", asset.URL.absoluteString];
@@ -185,7 +193,7 @@ typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
 
 +(NSArray <NSString *> *)assetKeysRequiredForPlayback
 {
-    return @[kPlayableKey, kProtectedContentKey];
+    return @[kPlayableKey, kProtectedContentKey, kTracksKey];
 }
 
 #pragma mark - Asset Loading Utilities
@@ -211,7 +219,8 @@ typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
     NSURL *assetURL = [NSURL URLWithString:assetURLString];
     return [self loadAssetWithURL:assetURL
                    operationQueue:operationQueue
-                          success:success failure:failure];
+                          success:success
+                          failure:failure];
 }
 
 +(ENHAVAssetLoadingOperation *)loadAssetWithURL:(NSURL *)assetURL
