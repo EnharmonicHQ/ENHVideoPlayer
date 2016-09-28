@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, nullable) NSURL *currentPlayerItemURL;
 @property (nonatomic, copy, nullable) void (^singleTapHandler)(UITapGestureRecognizer *tap);
 @property (nonatomic, assign, readonly) BOOL fullScreenActive;
+@property (nonatomic, assign) BOOL lockFullScreenToLandscapeOrientation;
 
 -(void)play;
 -(void)hidePlayerControlsView;

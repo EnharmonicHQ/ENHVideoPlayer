@@ -52,6 +52,11 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     [self.playerControlsView.playbackPositionSlider setMaximumValue:1.0];
     [self setEdgesForExtendedLayout:UIRectEdgeAll];
     [self.view setClipsToBounds:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleUIDeviceOrientationDidChangeNotification:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 
 -(void)setupGestureRecognizers
@@ -419,12 +424,20 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
             [self.controlVisibilityDelegate playerViewControllerFullScreenModeWillBecomeInactive:self];
         }
     }
+  
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    [[UIApplication sharedApplication] setStatusBarHidden:goFullScreen withAnimation:UIStatusBarAnimationFade];
+#pragma clang diagnostic pop
     
+    CGAffineTransform transform = (self.lockFullScreenToLandscapeOrientation && goFullScreen) ? CGAffineTransformMakeRotation(M_PI_2) : CGAffineTransformIdentity;
+  
     __weak __typeof(self)weakSelf = self;
     [UIView animateWithDuration:duration
                           delay:duration
                         options:options
                      animations:^{
+                         [weakSelf.view setTransform:transform];
                          [weakSelf.view setFrame:endRect];
                          [weakSelf.view layoutIfNeeded];
                      } completion:^(BOOL finished) {
@@ -455,6 +468,26 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                              }
                          }
                      }];
+}
+
+-(void)handleUIDeviceOrientationDidChangeNotification:(NSNotification *)note
+{
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+    if (UIDeviceOrientationIsLandscape(deviceOrientation))
+    {
+        CGAffineTransform transform = self.view.transform;
+        
+        if (deviceOrientation == UIDeviceOrientationLandscapeLeft) {
+            transform = CGAffineTransformMakeRotation(M_PI_2);
+        }
+        else if (deviceOrientation == UIDeviceOrientationLandscapeRight) {
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
+        }
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            [self.view setTransform:transform];
+        }];
+    }
 }
 
 #pragma mark - Error Handling - Preparing Assets for Playback Failed

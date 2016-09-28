@@ -211,7 +211,8 @@ typedef void (^ENHAVAssetLoadingOperationFailureBlock)(NSError *error);
     NSURL *assetURL = [NSURL URLWithString:assetURLString];
     return [self loadAssetWithURL:assetURL
                    operationQueue:operationQueue
-                          success:success failure:failure];
+                          success:success
+                          failure:failure];
 }
 
 +(ENHAVAssetLoadingOperation *)loadAssetWithURL:(NSURL *)assetURL
