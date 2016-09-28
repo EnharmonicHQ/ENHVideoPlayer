@@ -15,12 +15,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class ENHAVPlayerControlsView;
 
 @protocol ENHAVPlayerViewControllerControlVisibilityDelegate;
+@protocol ENHAVPlayerViewControllerControlFullScreenDelegate;
 
 @interface ENHAVPlayerViewController : UIViewController
 
 @property (nonatomic, weak, readonly) IBOutlet ENHAVPlayerControlsView *playerControlsView;
 
 @property (weak) id <ENHAVPlayerViewControllerControlVisibilityDelegate> controlVisibilityDelegate;
+@property (weak) id <ENHAVPlayerViewControllerControlFullScreenDelegate> fullScreenDelegate;
 @property (nonatomic, weak, nullable) AVPlayer *player;
 @property (readonly) BOOL isShowingPlayerControls;
 @property (nonatomic, weak, readonly) IBOutlet UIView *contentOverlayView;
@@ -60,11 +62,22 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)playerViewController:(ENHAVPlayerViewController *)playerViewController
         didHideControlsView:(ENHAVPlayerControlsView *)controlsView;
 
+@end
+
+@protocol ENHAVPlayerViewControllerControlFullScreenDelegate <NSObject>
+
+@optional
+-(void)playerViewController:(ENHAVPlayerViewController *)playerViewController
+willRequestFullScreenModeChangeForOrientation:(UIDeviceOrientation)orientation;
+-(BOOL)playerViewController:(ENHAVPlayerViewController *)playerViewController
+shouldChangeFullScreenModeForChangeInOrientation:(UIDeviceOrientation)orientation;
 -(void)playerViewControllerFullScreenModeWillBecomeActive:(ENHAVPlayerViewController *)playerViewController;
 -(void)playerViewControllerFullScreenModeDidBecomeActive:(ENHAVPlayerViewController *)playerViewController;
 -(void)playerViewControllerFullScreenModeWillBecomeInactive:(ENHAVPlayerViewController *)playerViewController;
 -(void)playerViewControllerFullScreenModeDidBecomeInactive:(ENHAVPlayerViewController *)playerViewController;
 
 @end
+
+
 
 NS_ASSUME_NONNULL_END

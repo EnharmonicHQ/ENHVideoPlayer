@@ -414,16 +414,16 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
   
     if (goFullScreen)
     {
-        if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeActive:)])
+        if ([self.fullScreenDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeActive:)])
         {
-            [self.controlVisibilityDelegate playerViewControllerFullScreenModeWillBecomeActive:self];
+            [self.fullScreenDelegate playerViewControllerFullScreenModeWillBecomeActive:self];
         }
     }
     else
     {
-        if ([self.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeInactive:)])
+        if ([self.fullScreenDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeWillBecomeInactive:)])
         {
-            [self.controlVisibilityDelegate playerViewControllerFullScreenModeWillBecomeInactive:self];
+            [self.fullScreenDelegate playerViewControllerFullScreenModeWillBecomeInactive:self];
         }
     }
   
@@ -458,16 +458,16 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
                          
                          if (weakSelf.fullScreenActive)
                          {
-                             if ([weakSelf.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeActive:)])
+                             if ([weakSelf.fullScreenDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeActive:)])
                              {
-                                 [weakSelf.controlVisibilityDelegate playerViewControllerFullScreenModeDidBecomeActive:weakSelf];
+                                 [weakSelf.fullScreenDelegate playerViewControllerFullScreenModeDidBecomeActive:weakSelf];
                              }
                          }
                          else
                          {
-                             if ([weakSelf.controlVisibilityDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeInactive:)])
+                             if ([weakSelf.fullScreenDelegate respondsToSelector:@selector(playerViewControllerFullScreenModeDidBecomeInactive:)])
                              {
-                                 [weakSelf.controlVisibilityDelegate playerViewControllerFullScreenModeDidBecomeInactive:weakSelf];
+                                 [weakSelf.fullScreenDelegate playerViewControllerFullScreenModeDidBecomeInactive:weakSelf];
                              }
                          }
                      }];
@@ -475,14 +475,44 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 -(void)handleUIDeviceOrientationDidChangeNotification:(NSNotification *)note
 {
-    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
-    if (UIDeviceOrientationIsLandscape(deviceOrientation))
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    BOOL shouldAttemptFullscreen = ![self fullScreenActive] && UIDeviceOrientationIsLandscape(orientation) && self.player.rate > 0;
+    if (shouldAttemptFullscreen)
     {
-        CGAffineTransform transform = [self transformForOrientation:deviceOrientation];
+        if ([self.fullScreenDelegate respondsToSelector:@selector(playerViewController:willRequestFullScreenModeChangeForOrientation:)])
+        {
+            [self.fullScreenDelegate playerViewController:self willRequestFullScreenModeChangeForOrientation:orientation];
+        }
         
-        [UIView animateWithDuration:0.3 animations:^{
-            [self.view setTransform:transform];
-        }];
+        __weak __typeof(self)weakSelf = self;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if ([weakSelf.fullScreenDelegate respondsToSelector:@selector(playerViewController:shouldChangeFullScreenModeForChangeInOrientation:)]) {
+                if ([weakSelf.fullScreenDelegate playerViewController:weakSelf shouldChangeFullScreenModeForChangeInOrientation:orientation])
+                {
+                    BOOL shouldGoFullscreen = ![weakSelf fullScreenActive];
+                    [weakSelf showFullscreenView:shouldGoFullscreen
+                                    withDuration:0.2
+                                         options:(UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)];
+                }
+            }
+        });
+    }
+    else if (self.fullScreenActive)
+    {
+        if (UIDeviceOrientationIsLandscape(orientation))
+        {
+            CGAffineTransform transform = [self transformForOrientation:orientation];
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                [self.view setTransform:transform];
+            }];
+        }
+        else if (orientation == UIDeviceOrientationPortrait)
+        {
+            [self showFullscreenView:NO
+                        withDuration:0.2
+                             options:(UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)];
+        }
     }
 }
 
@@ -495,7 +525,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
         {
             transform = CGAffineTransformMakeRotation(M_PI_2);
         }
-        else if (orientation == UIDeviceOrientationLandscapeRight)
+        else
         {
             transform = CGAffineTransformMakeRotation(-M_PI_2);
         }
