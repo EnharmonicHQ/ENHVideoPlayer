@@ -430,7 +430,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     [[UIApplication sharedApplication] setStatusBarHidden:goFullScreen withAnimation:UIStatusBarAnimationFade];
 #pragma clang diagnostic pop
     
-    CGAffineTransform transform = (self.lockFullScreenToLandscapeOrientation && goFullScreen) ? CGAffineTransformMakeRotation(M_PI_2) : CGAffineTransformIdentity;
+    CGAffineTransform transform = (self.lockFullScreenToLandscapeOrientation && goFullScreen) ? CGAffineTransformMakeRotation(-M_PI_2) : CGAffineTransformIdentity;
   
     __weak __typeof(self)weakSelf = self;
     [UIView animateWithDuration:duration
