@@ -385,6 +385,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
              withDuration:(NSTimeInterval)duration
                   options:(UIViewAnimationOptions)options
 {
+    [self.playerControlsView.fullscreenModeButton setSelected:goFullScreen];
+  
     CGRect endRect = CGRectZero;
     
     if (goFullScreen)
@@ -430,7 +432,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     [[UIApplication sharedApplication] setStatusBarHidden:goFullScreen withAnimation:UIStatusBarAnimationFade];
 #pragma clang diagnostic pop
     
-    CGAffineTransform transform = (self.lockFullScreenToLandscapeOrientation && goFullScreen) ? CGAffineTransformMakeRotation(-M_PI_2) : CGAffineTransformIdentity;
+    UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
+    CGAffineTransform transform = (self.lockFullScreenToLandscapeOrientation && goFullScreen) ? [self transformForOrientation:deviceOrientation] : CGAffineTransformIdentity;
   
     __weak __typeof(self)weakSelf = self;
     [UIView animateWithDuration:duration
@@ -475,19 +478,30 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     UIDeviceOrientation deviceOrientation = [[UIDevice currentDevice] orientation];
     if (UIDeviceOrientationIsLandscape(deviceOrientation))
     {
-        CGAffineTransform transform = self.view.transform;
-        
-        if (deviceOrientation == UIDeviceOrientationLandscapeLeft) {
-            transform = CGAffineTransformMakeRotation(M_PI_2);
-        }
-        else if (deviceOrientation == UIDeviceOrientationLandscapeRight) {
-            transform = CGAffineTransformMakeRotation(-M_PI_2);
-        }
+        CGAffineTransform transform = [self transformForOrientation:deviceOrientation];
         
         [UIView animateWithDuration:0.3 animations:^{
             [self.view setTransform:transform];
         }];
     }
+}
+
+-(CGAffineTransform)transformForOrientation:(UIDeviceOrientation)orientation
+{
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    if (self.lockFullScreenToLandscapeOrientation)
+    {
+        if (orientation == UIDeviceOrientationLandscapeLeft)
+        {
+            transform = CGAffineTransformMakeRotation(M_PI_2);
+        }
+        else if (orientation == UIDeviceOrientationLandscapeRight)
+        {
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
+        }
+    }
+    
+    return transform;
 }
 
 #pragma mark - Error Handling - Preparing Assets for Playback Failed
@@ -610,7 +624,6 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 -(IBAction)fullScreenModeButtonTapped:(id)sender
 {
     BOOL shouldGoFullscreen = ![self.playerControlsView.fullscreenModeButton isSelected];
-    [self.playerControlsView.fullscreenModeButton setSelected:shouldGoFullscreen];
     [self showFullscreenView:shouldGoFullscreen
                 withDuration:0.2
                      options:(UIViewAnimationOptionCurveEaseIn | UIViewAnimationOptionBeginFromCurrentState)];

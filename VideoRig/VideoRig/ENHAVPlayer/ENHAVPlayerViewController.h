@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)hidePlayerControlsView;
 -(void)showPlayerControlsView;
 
+-(void)showFullscreenView:(BOOL)goFullScreen
+             withDuration:(NSTimeInterval)duration
+                  options:(UIViewAnimationOptions)options;
+
 @property (nonatomic, copy, nullable) void (^playerItemStatusHandler)(AVPlayerItemStatus status);
 
 @end
