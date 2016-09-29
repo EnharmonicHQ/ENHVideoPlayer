@@ -497,7 +497,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
             }
         });
     }
-    else if (self.fullScreenActive)
+    else if (self.fullScreenActive || self.fullScreenTransitionInProgress)
     {
         if (UIDeviceOrientationIsLandscape(orientation))
         {
