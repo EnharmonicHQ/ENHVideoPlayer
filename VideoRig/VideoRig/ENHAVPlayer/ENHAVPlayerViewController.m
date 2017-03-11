@@ -557,6 +557,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Playback Error"
                                                                    message:message
                                                             preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:defaultAction];
     [self presentViewController:alert animated:YES completion:nil];
 }
 
