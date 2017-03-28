@@ -14,7 +14,7 @@
 #import "ENHAVIdlePlaybackView.h"
 
 // Utilities
-#import <KVOController/NSObject+FBKVOController.h>
+#import "NSObject+FBKVOController.h"
 #import "NSString+ENHTimeInterval.h"
 #import "UIImageView+ENHAVThumbnail.h"
 
@@ -708,14 +708,9 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
         CMTime duration = [self.player.currentItem duration];
         if (CMTIME_IS_VALID(duration) && !CMTIME_IS_INDEFINITE(duration) && !self.periodicTimeObserver)
         {
-            CGFloat width = self.view.bounds.size.width;
-            if ([self.playerControlsView playbackPositionSlider])
-            {
-                width = self.playerControlsView.playbackPositionSlider.bounds.size.width;
-            }
-            Float64 tolerance = 0.5f * CMTimeGetSeconds(duration) / width;
+            CMTime interval = CMTimeMakeWithSeconds(0.1, NSEC_PER_SEC);
             __weak __typeof(self)weakSelf = self;
-            self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMakeWithSeconds(tolerance, NSEC_PER_SEC)
+            self.periodicTimeObserver = [self.player addPeriodicTimeObserverForInterval:interval
                                                                                   queue:NULL
                                                                              usingBlock:^(CMTime time) {
                                                                                  [weakSelf syncTimeUI];
