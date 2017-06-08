@@ -191,17 +191,18 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     if (![self isSeekInProgress] && ((self.playerControlsView.hidden == NO && [self isShowingPlayerControls]) || forced))
     {
-        NSString *playheadTimeString = @"--:--";
-        NSString *durationString = @"--:--";
+        NSString *playheadTimeString = NSLocalizedString(@"--:--", @"Undetermined media playback time label placeholder");
+        NSString *durationString = NSLocalizedString(@"--:--", @"Undetermined media duration label placeholder");
         
         CMTime duration = [self.player.currentItem duration];
         if (CMTIME_IS_INDEFINITE(duration))
         {
-            playheadTimeString = @"Live";
-            [self.playerControlsView.playbackPositionSlider setHidden:YES];
+            playheadTimeString =  NSLocalizedString(@"Live", @"Live video duration label. Live video has an indeterminate duration, so we display \"Live\" indicator text instead.");
+            [self.playerControlsView.playbackPositionSlider setEnabled:NO];
         }
         else
         {
+            [self.playerControlsView.playbackPositionSlider setEnabled:YES];
             [self.playerControlsView.playbackPositionSlider setHidden:NO];
             if ((self.player.status == AVPlayerStatusReadyToPlay))
             {

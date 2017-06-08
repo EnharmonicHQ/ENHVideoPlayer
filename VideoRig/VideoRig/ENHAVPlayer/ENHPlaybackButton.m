@@ -90,7 +90,8 @@
             }
             else
             {
-                [self setTitle:@"►" forState:UIControlStateNormal];
+                NSString *defaultPlayString = NSLocalizedString(@"►", @"Default play button text");
+                [self setTitle:defaultPlayString forState:UIControlStateNormal];
             }
             break;
         case ENHPlaybackButtonStatePlaybackPlaying:
@@ -102,7 +103,8 @@
             }
             else
             {
-                [self setTitle:@"||" forState:UIControlStateNormal];
+                NSString *defaultPauseString = NSLocalizedString(@"||", @"Default pause button text");
+                [self setTitle:defaultPauseString forState:UIControlStateNormal];
             }
             break;
     }
