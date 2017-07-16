@@ -187,7 +187,11 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 {
     ENHPlaybackButtonState status = ENHPlaybackButtonStateUnknown;
     
-    if ([self.player.currentItem isPlaybackLikelyToKeepUp] || CMTIME_COMPARE_INLINE(self.player.currentItem.currentTime, >=, self.player.currentItem.duration))
+    AVPlayerItem *playerItem = [self.player currentItem];
+    
+    if ([playerItem isPlaybackLikelyToKeepUp] ||
+        [playerItem isPlaybackBufferFull] ||
+        CMTIME_COMPARE_INLINE(playerItem.currentTime, >=, playerItem.duration))
     {
         [self.playerControlsView.playPauseButton setEnabled:YES];
         BOOL isPlaying = self.player.rate != 0.0;
