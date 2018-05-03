@@ -79,7 +79,7 @@ static const NSTimeInterval kENHAVPlayerControlsViewDefaultAnimationDuration = 0
     __weak __typeof(self)weakSelf = self;
     [self layoutIfNeeded];
     
-    void (^ continueBlock)() = ^() {
+    void (^ continueBlock)(void) = ^() {
         [weakSelf.playPauseButton setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlayPause)];
         [weakSelf.playbackPositionSlider setHidden:!(weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlaybackPositionSlider)];
         [weakSelf.playbackPositionSlider setAlpha:((weakSelf.visibilityOptions & ENHAVPlayerControlsViewOptionPlaybackPositionSlider) ? 1.0 : 0.0)];
