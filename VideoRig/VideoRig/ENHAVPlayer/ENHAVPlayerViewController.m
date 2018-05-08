@@ -59,6 +59,9 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 @property (nonatomic, assign, readwrite) BOOL fullScreenActive;
 @property (nonatomic, assign) BOOL fullScreenTransitionInProgress;
 
+@property (nonatomic, strong, readwrite) UITapGestureRecognizer *singleTapGestureRecognizer;
+@property (nonatomic, strong, readwrite) UITapGestureRecognizer *doubleTapGestureRecognizer;
+
 @end
 
 @implementation ENHAVPlayerViewController
@@ -92,10 +95,12 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureRecognizer:)];
     [singleTap setNumberOfTapsRequired:1];
     [self.view addGestureRecognizer:singleTap];
+    [self setSingleTapGestureRecognizer:singleTap];
     
     UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTapGestureRecognizer:)];
     [doubleTap setNumberOfTapsRequired:2];
     [self.view addGestureRecognizer:doubleTap];
+    [self setDoubleTapGestureRecognizer:doubleTap];
     
     [singleTap requireGestureRecognizerToFail:doubleTap];
 }
@@ -261,9 +266,14 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
     }
 }
 
--(void)deferredHidePlayerControlsView
+-(void)cancelDeferredHidePlayerControlsView
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayerControlsView) object:nil];
+}
+
+-(void)deferredHidePlayerControlsView
+{
+    [self cancelDeferredHidePlayerControlsView];
     if ([self shouldHidePlayerControlsView])
     {
         [self performSelector:@selector(hidePlayerControlsView)
@@ -306,6 +316,8 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 
 -(void)showPlayerControlsView
 {
+    [self cancelDeferredHidePlayerControlsView];
+    
     if (!self.isPlayerControlsViewAnimationInFlight)
     {
         [self showPlayerControlsView:YES
@@ -809,7 +821,7 @@ static const NSTimeInterval kENHInteractionTimeoutInterval = 3.0;
 -(void)playerRateDidChange:(NSDictionary *)change
 {
     [self syncPlayPauseButtons];
-    if ([self.player rate] == 0.0)
+    if ([self.player rate] == 0.0 && [self shouldHidePlayerControlsView] == NO)
     {
         [self showPlayerControlsView];
     }

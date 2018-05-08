@@ -51,7 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) BOOL fullScreenActive;
 @property (nonatomic, assign) BOOL lockFullScreenToLandscapeOrientation;
 
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *singleTapGestureRecognizer;
+@property (nonatomic, strong, readonly) UITapGestureRecognizer *doubleTapGestureRecognizer;
+
 -(void)play;
+-(void)cancelDeferredHidePlayerControlsView;
 -(void)hidePlayerControlsView;
 -(void)showPlayerControlsView;
 
